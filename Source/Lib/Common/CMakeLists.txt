@@ -5,13 +5,13 @@
 
 # Libraries Directory CMakeLists.txt
 
-function(test_apply_compiler_flags flags current_flags)
+function(test_apply_compiler_flags flags)
     foreach(cflag ${${flags}})
         string(REGEX REPLACE "[^A-Za-z0-9]" "_" cflag_var "${cflag}")
         set(test_c_flag "C_FLAG${cflag_var}")
         check_c_compiler_flag(${cflag} "${test_c_flag}")
         if(${test_c_flag})
-            set(${current_flags} "${${current_flags}} ${cflag}" PARENT_SCOPE)
+            set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${cflag}" PARENT_SCOPE)
         endif()
     endforeach()
 endfunction()
