@@ -20,7 +20,7 @@ if(CMAKE_C_COMPILER_ID STREQUAL "Intel" AND NOT WIN32)
     list(APPEND flags_to_test -static-intel -w)
 endif()
 
-test_apply_compiler_flags(flags_to_test)
+test_apply_compiler_flags(${flags_to_test})
 
 file(GLOB all_files
     "*.h"

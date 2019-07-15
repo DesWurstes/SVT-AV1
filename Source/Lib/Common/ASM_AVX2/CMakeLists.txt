@@ -30,7 +30,7 @@ if(MSVC)
     list(APPEND flags_to_test /arch:AVX2)
 endif()
 
-test_apply_compiler_flags(flags_to_test)
+test_apply_compiler_flags(${flags_to_test})
 
 file(GLOB all_files
     "*.h"
