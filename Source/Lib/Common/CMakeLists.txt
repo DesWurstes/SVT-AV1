@@ -5,16 +5,16 @@
 
 # Libraries Directory CMakeLists.txt
 
-function(test_apply_compiler_flags flags)
-    foreach(cflag ${${flags}})
+macro(test_apply_compiler_flags)
+    foreach(cflag ${ARGV})
         string(REGEX REPLACE "[^A-Za-z0-9]" "_" cflag_var "${cflag}")
         set(test_c_flag "C_FLAG${cflag_var}")
         check_c_compiler_flag(${cflag} "${test_c_flag}")
         if(${test_c_flag})
-            set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${cflag}" PARENT_SCOPE)
+            set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${cflag}")
         endif()
     endforeach()
-endfunction()
+endmacro()
 
 add_subdirectory(Codec)
 add_subdirectory(C_DEFAULT)
