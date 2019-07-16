@@ -6,6 +6,8 @@
 #ifndef EbDecParseHelper_h
 #define EbDecParseHelper_h
 
+#include "EbModeDecision.h"
+
 #define ACCT_STR __func__
 
 static const PredictionMode fimode_to_intradir[FILTER_INTRA_MODES] = {
@@ -50,16 +52,16 @@ int filter_intra_allowed_bsize(EbDecHandle *dec_handle, BlockSize bs);
 int filter_intra_allowed(EbDecHandle *dec_handle, const ModeInfo_t *mbmi);
 int allow_intrabc(const EbDecHandle *dec_handle);
 PredictionMode dec_get_uv_mode(UvPredictionMode mode);
-TxType intra_mode_to_tx_type(const ModeInfo_t *mbmi, PlaneType plane_type);
+static INLINE TxType intra_mode_to_tx_type(const MbModeInfo *mbmi, PlaneType plane_type);
 int has_second_ref(const ModeInfo_t *mbmi);
 IntMv_dec gm_get_motion_vector(const GlobalMotionParams *gm, int allow_hp,
     BlockSize bsize, int mi_col, int mi_row, int is_integer);
-int get_txb_wide(TxSize tx_size);
-int get_txb_high(TxSize tx_size);
+static INLINE int get_txb_wide(TxSize tx_size);
+static INLINE int get_txb_high(TxSize tx_size);
 int get_lower_levels_ctx_eob(int bwl, int height, int scan_idx);
 uint8_t *set_levels(uint8_t *const levels_buf, const int width);
 int get_padded_idx(const int idx, const int bwl);
-int get_txb_bwl(TxSize tx_size);
+static INLINE int get_txb_bwl(TxSize tx_size);
 int get_comp_reference_type_context(const PartitionInfo_t *xd);
 AomCdfProb *get_y_mode_cdf(FRAME_CONTEXT *tile_ctx, const ModeInfo_t *above_mi,
     const ModeInfo_t *left_mi);

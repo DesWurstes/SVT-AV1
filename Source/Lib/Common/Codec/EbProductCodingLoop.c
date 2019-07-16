@@ -2174,7 +2174,7 @@ void check_best_indepedant_cfl(
     }
 }
 
-EbErrorType av1_predict_intra_block(
+void av1_predict_intra_block(
     TileInfo                    *tile,
     STAGE                       stage,
     const BlockGeom            *blk_geom,

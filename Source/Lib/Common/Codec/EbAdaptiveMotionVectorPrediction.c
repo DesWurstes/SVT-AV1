@@ -148,7 +148,7 @@ static INLINE PredictionMode compound_ref1_mode(PredictionMode mode) {
     return lut[mode];
 }
 
-/*static INLINE*/ int32_t is_inter_block_with_intrabc(const MbModeInfo *mbmi) {
+/*static INLINE*/ int32_t is_inter_block(const MbModeInfo *mbmi) {
     return (mbmi->use_intrabc || (mbmi->ref_frame[0] > INTRA_FRAME));
 }
 
@@ -298,7 +298,7 @@ static void add_ref_mv_candidate(
 #endif  // USE_CUR_GM_REFMV
     int32_t col, int32_t weight)
 {
-    if (!is_inter_block_with_intrabc(candidate)) return;  // for intrabc
+    if (!is_inter_block(candidate)) return;  // for intrabc
     int32_t index = 0, ref;
     assert(weight % 2 == 0);
 

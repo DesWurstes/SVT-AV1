@@ -822,12 +822,6 @@ static void process_single_ref_mv_candidate(ModeInfo_t * candidate,
     }
 }
 
-static INLINE void clamp_mv(MV *mv, int min_col, int max_col, int min_row,
-    int max_row) {
-    mv->col = clamp(mv->col, min_col, max_col);
-    mv->row = clamp(mv->row, min_row, max_row);
-}
-
 static INLINE void clamp_mv_ref(MV *mv, int bw, int bh, PartitionInfo_t *pi) {
     clamp_mv(mv, pi->mb_to_left_edge - bw * 8 - MV_BORDER,
         pi->mb_to_right_edge + bw * 8 + MV_BORDER,

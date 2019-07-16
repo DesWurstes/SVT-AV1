@@ -821,7 +821,7 @@ void av1_setup_dst_planes(struct MacroblockdPlane *planes, BlockSize bsize,
 #define INTER_TX_SIZE_BUF_LEN 16
 
 static INLINE TxSize
-av1_get_max_uv_txsize(BlockSize bsize, const struct MacroblockdPlane *pd) {
+av1_get_max_uv_txsize_with_plane(BlockSize bsize, const struct MacroblockdPlane *pd) {
     const BlockSize plane_bsize = get_plane_block_size(bsize, pd->subsampling_x, pd->subsampling_y);
 
     assert(plane_bsize < BlockSizeS_ALL);
@@ -844,7 +844,7 @@ static TxSize get_transform_size(const MacroBlockD *const xd,
     TxSize tx_size = (plane == COMPONENT_LUMA)
         ? (is_inter_block(mbmi) ? tx_depth_to_tx_size[0][mbmi->sb_type] : tx_depth_to_tx_size[mbmi->tx_depth][mbmi->sb_type]) // use max_tx_size
 
-        : av1_get_max_uv_txsize(mbmi->sb_type, plane_ptr);
+        : av1_get_max_uv_txsize_with_plane(mbmi->sb_type, plane_ptr);
     assert(tx_size < TX_SIZES_ALL);
     if (((plane == COMPONENT_LUMA) && is_inter_block(mbmi) && !mbmi->skip)) {  // if split tx is used
 

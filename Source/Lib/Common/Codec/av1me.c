@@ -15,9 +15,11 @@
 #include "EbDefinitions.h"
 #include "EbCodingUnit.h"
 #include "av1me.h"
+#include "EbAdaptiveMotionVectorPrediction.h"
 #include "EbPictureControlSet.h"
 #include "EbSequenceControlSet.h"
 #include "EbComputeSAD.h"
+#include "EbInterPrediction.h"
 #include "aom_dsp_rtcd.h"
 
 int av1_is_dv_valid(const MV dv,

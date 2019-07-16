@@ -24,6 +24,7 @@
 
 #include "EbDecParseHelper.h"
 #include "EbDecUtils.h"
+#include "EbDecPicMgr.h"
 #include "EbTransforms.h"
 
 int neg_deinterleave(const int diff, int ref, int max) {
@@ -344,28 +345,6 @@ PredictionMode dec_get_uv_mode(UvPredictionMode mode) {
     return uv2y[mode];
 }
 
-TxType intra_mode_to_tx_type(const ModeInfo_t *mbmi, PlaneType plane_type) {
-    static const TxType _intra_mode_to_tx_type[INTRA_MODES] = {
-        DCT_DCT,    // DC
-        ADST_DCT,   // V
-        DCT_ADST,   // H
-        DCT_DCT,    // D45
-        ADST_ADST,  // D135
-        ADST_DCT,   // D117
-        DCT_ADST,   // D153
-        DCT_ADST,   // D207
-        ADST_DCT,   // D63
-        ADST_ADST,  // SMOOTH
-        ADST_DCT,   // SMOOTH_V
-        DCT_ADST,   // SMOOTH_H
-        ADST_ADST,  // PAETH
-    };
-    const PredictionMode mode =
-        (plane_type == PLANE_TYPE_Y) ? mbmi->mode : dec_get_uv_mode(mbmi->uv_mode);
-    assert(mode < INTRA_MODES);
-    return _intra_mode_to_tx_type[mode];
-}
-
 int has_second_ref(const ModeInfo_t *mbmi) {
     return mbmi->ref_frame[1] > INTRA_FRAME;
 }
@@ -432,16 +411,6 @@ IntMv_dec gm_get_motion_vector(const GlobalMotionParams *gm, int allow_hp,
     return res;
 }
 
-int get_txb_wide(TxSize tx_size) {
-    tx_size = av1_get_adjusted_tx_size(tx_size);
-    return tx_size_wide[tx_size];
-}
-
-int get_txb_high(TxSize tx_size) {
-    tx_size = av1_get_adjusted_tx_size(tx_size);
-    return tx_size_high[tx_size];
-}
-
 int get_lower_levels_ctx_eob(int bwl, int height, int scan_idx) {
     if (scan_idx == 0) return 0;
     if (scan_idx <= (height << bwl) / 8) return 1;
@@ -455,11 +424,6 @@ uint8_t *set_levels(uint8_t *const levels_buf, const int width) {
 
 int get_padded_idx(const int idx, const int bwl) {
     return idx + ((idx >> bwl) << TX_PAD_HOR_LOG2);
-}
-
-int get_txb_bwl(TxSize tx_size) {
-    tx_size = av1_get_adjusted_tx_size(tx_size);
-    return tx_size_wide_log2[tx_size];
 }
 
 static INLINE int has_uni_comp_refs(const ModeInfo_t *mbmi) {

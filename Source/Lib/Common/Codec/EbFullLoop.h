@@ -7,6 +7,7 @@
 #define EbFullLoop_h
 
 #include "EbModeDecisionProcess.h"
+#include "EbModeDecisionConfigurationProcess.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
