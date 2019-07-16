@@ -33,10 +33,6 @@
 extern PredictionMode get_uv_mode(UvPredictionMode mode);
 
 /*TODO: Remove replication and harmonize with encoder after data str. harmonization */
-static INLINE int32_t dec_is_inter_block(const ModeInfo_t *mbmi) {
-    return (mbmi->use_intrabc || (mbmi->ref_frame[0] > INTRA_FRAME));
-}
-/*TODO: Remove replication and harmonize with encoder after data str. harmonization */
 static int dec_is_smooth(const ModeInfo_t *mbmi, int32_t plane) {
     if (plane == 0) {
         const PredictionMode mode = mbmi->mode;
@@ -46,7 +42,7 @@ static int dec_is_smooth(const ModeInfo_t *mbmi, int32_t plane) {
     else {
         // uv_mode is not set for inter blocks, so need to explicitly
         // detect that case.
-        if (dec_is_inter_block(mbmi)) return 0;
+        if (mbmi->use_intrabc || (mbmi->ref_frame[0] > INTRA_FRAME)) return 0;
 
         const UvPredictionMode uv_mode = mbmi->uv_mode;
         return (uv_mode == UV_SMOOTH_PRED || uv_mode == UV_SMOOTH_V_PRED ||
