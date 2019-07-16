@@ -19,43 +19,6 @@ extern "C" {
 #include "EbDefinitions.h"
 #include "filter.h"
 
-    //--filtyer.h
-#define MAX_FILTER_TAP 8
-
-    // With CONFIG_DUAL_FILTER, pack two InterpFilter's into a uint32_t: since
-    // there are at most 10 filters, we can use 16 bits for each and have more than
-    // enough space. This reduces argument passing and unifies the operation of
-    // setting a (pair of) filters.
-    //
-    // Without CONFIG_DUAL_FILTER,
-    typedef uint32_t InterpFilters;
-    static INLINE InterpFilter av1_extract_interp_filter(InterpFilters filters,
-        int32_t x_filter) {
-        return (InterpFilter)((filters >> (x_filter ? 16 : 0)) & 0xffff);
-    }
-
-    static INLINE InterpFilters av1_make_interp_filters(InterpFilter y_filter,
-        InterpFilter x_filter) {
-        uint16_t y16 = y_filter & 0xffff;
-        uint16_t x16 = x_filter & 0xffff;
-        return y16 | ((uint32_t)x16 << 16);
-    }
-
-    static INLINE InterpFilters av1_broadcast_interp_filter(InterpFilter filter) {
-        return av1_make_interp_filters(filter, filter);
-    }
-
-    static INLINE InterpFilter av1_unswitchable_filter(InterpFilter filter) {
-        return filter == SWITCHABLE ? EIGHTTAP_REGULAR : filter;
-    }
-
-#define LOG_SWITCHABLE_FILTERS \
-  2 /* (1 << LOG_SWITCHABLE_FILTERS) > SWITCHABLE_FILTERS */
-
-#define MAX_SUBPEL_TAPS 12
-#define SWITCHABLE_FILTER_CONTEXTS ((SWITCHABLE_FILTERS + 1) * 4)
-#define INTER_FILTER_COMP_OFFSET (SWITCHABLE_FILTERS + 1)
-#define INTER_FILTER_DIR_OFFSET ((SWITCHABLE_FILTERS + 1) * 2)
     /*
         typedef struct InterpFilterParams {
             const int16_t *filter_ptr;

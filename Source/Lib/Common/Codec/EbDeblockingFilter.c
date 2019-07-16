@@ -762,7 +762,7 @@ static INLINE int32_t scaled_buffer_offset(int32_t x_offset, int32_t y_offset, i
         /*sf ? sf->scale_value_y(y_offset, sf) >> SCALE_EXTRA_BITS :*/ y_offset;
     return y * stride + x;
 }
-static INLINE void setup_pred_plane(struct Buf2d *dst, BlockSize bsize,
+static INLINE void setup_pred_plane_optional_16bit(struct Buf2d *dst, BlockSize bsize,
     uint8_t *src, int32_t width, int32_t height,
     int32_t stride, int32_t mi_row, int32_t mi_col,
     /*const struct scale_factors *scale,*/
@@ -792,26 +792,26 @@ void av1_setup_dst_planes(struct MacroblockdPlane *planes, BlockSize bsize,
     //for (int32_t i = plane_start; i < AOMMIN(plane_end, MAX_MB_PLANE); ++i) {
     //    struct MacroblockdPlane *const pd = &planes[i];
     //    const int32_t is_uv = i > 0;
-    //    setup_pred_plane(&pd->dst, bsize, src->buffers[i], src->crop_widths[is_uv],
+    //    setup_pred_plane_optional_16bit(&pd->dst, bsize, src->buffers[i], src->crop_widths[is_uv],
     //        src->crop_heights[is_uv], src->strides[is_uv], mi_row,
     //        mi_col, NULL, pd->subsampling_x, pd->subsampling_y);
     //}
     for (int32_t i = plane_start; i < AOMMIN(plane_end, 3); ++i) {
         if (i == 0) {
             struct MacroblockdPlane *const pd = &planes[0];
-            setup_pred_plane(&pd->dst, bsize, &src->buffer_y[(src->origin_x + src->origin_y*src->stride_y) << pd->is16Bit], src->width,
+            setup_pred_plane_optional_16bit(&pd->dst, bsize, &src->buffer_y[(src->origin_x + src->origin_y*src->stride_y) << pd->is16Bit], src->width,
                 src->height, src->stride_y, mi_row,
                 mi_col, /*NULL,*/ pd->subsampling_x, pd->subsampling_y, pd->is16Bit); //AMIR: Updated to point to the right location
         }
         else if (i == 1) {
             struct MacroblockdPlane *const pd = &planes[1];
-            setup_pred_plane(&pd->dst, bsize, &src->buffer_cb[((src->origin_x + src->origin_y*src->stride_cb) << pd->is16Bit) / 2], src->width / 2,
+            setup_pred_plane_optional_16bit(&pd->dst, bsize, &src->buffer_cb[((src->origin_x + src->origin_y*src->stride_cb) << pd->is16Bit) / 2], src->width / 2,
                 src->height / 2, src->stride_cb, mi_row,
                 mi_col, /*NULL,*/ pd->subsampling_x, pd->subsampling_y, pd->is16Bit);
         }
         else if (i == 2) {
             struct MacroblockdPlane *const pd = &planes[2];
-            setup_pred_plane(&pd->dst, bsize, &src->buffer_cr[((src->origin_x + src->origin_y*src->stride_cr) << pd->is16Bit) / 2], src->width / 2,
+            setup_pred_plane_optional_16bit(&pd->dst, bsize, &src->buffer_cr[((src->origin_x + src->origin_y*src->stride_cr) << pd->is16Bit) / 2], src->width / 2,
                 src->height / 2, src->stride_cr, mi_row,
                 mi_col,/* NULL,*/ pd->subsampling_x, pd->subsampling_y, pd->is16Bit);
         }

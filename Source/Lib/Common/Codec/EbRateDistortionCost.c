@@ -76,7 +76,7 @@ MvJointType av1_get_mv_joint(const MV *mv) {
     else
         return mv->col == 0 ? MV_JOINT_HZVNZ : MV_JOINT_HNZVNZ;
 }
-int32_t mv_cost(const MV *mv, const int32_t *joint_cost,
+int32_t mv_cost_calculate(const MV *mv, const int32_t *joint_cost,
     int32_t *const comp_cost[2]) {
     int32_t jnC = av1_get_mv_joint(mv);
     int32_t res =
@@ -89,7 +89,7 @@ int32_t mv_cost(const MV *mv, const int32_t *joint_cost,
 int32_t av1_mv_bit_cost(const MV *mv, const MV *ref, const int32_t *mvjcost,
     int32_t *mvcost[2], int32_t weight) {
     const MV diff = { mv->row - ref->row, mv->col - ref->col };
-    return ROUND_POWER_OF_TWO(mv_cost(&diff, mvjcost, mvcost) * weight, 7);
+    return ROUND_POWER_OF_TWO(mv_cost_calculate(&diff, mvjcost, mvcost) * weight, 7);
 }
 
 /////////////////////////////COEFFICIENT CALCULATION //////////////////////////////////////////////

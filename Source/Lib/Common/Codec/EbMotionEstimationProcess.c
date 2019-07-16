@@ -43,7 +43,6 @@
 |42||43||46||47|     |58||59||62||63|
 -------------------------------------*/
 EbErrorType CheckZeroZeroCenter(
-    PictureParentControlSet   *picture_control_set_ptr,
     EbPictureBufferDesc        *refPicPtr,
     MeContext                  *context_ptr,
     uint32_t                       sb_origin_x,
