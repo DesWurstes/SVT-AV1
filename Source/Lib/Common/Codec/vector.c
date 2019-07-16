@@ -26,8 +26,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <stdlib.h>
 #include <string.h>
 
-#include "EbUtiliy.h"
 #include "vector.h"
+#define MAX(a, b) ((a) > (b) ? (a) : (b))
 
 int aom_vector_setup(Vector *vector, size_t capacity, size_t element_size) {
   assert(vector != NULL);

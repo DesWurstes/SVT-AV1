@@ -17,6 +17,7 @@ extern "C" {
 #endif
 
 #include "EbDefinitions.h"
+#include "filter.h"
 
     //--filtyer.h
 #define MAX_FILTER_TAP 8
@@ -174,11 +175,6 @@ extern "C" {
         const int32_t subpel_y_q4, int32_t y_step_q4,
         int32_t scaled, ConvolveParams *conv_params,
         const struct scale_factors *sf, int32_t bd);
-
-    static INLINE const int16_t *av1_get_interp_filter_subpel_kernel(
-        const InterpFilterParams filter_params, const int32_t subpel) {
-        return filter_params.filter_ptr + filter_params.taps * subpel;
-    }
 
 #ifdef __cplusplus
 }  // extern "C"

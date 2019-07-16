@@ -15,6 +15,7 @@
 #include <math.h>
 #include "EbDefinitions.h"
 #include "EbPictureBufferDesc.h"
+#include "mathutils.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -339,45 +340,6 @@ extern "C" {
     //void av1_loop_restoration_save_boundary_lines(const Yv12BufferConfig *frame,
     //                                              struct AV1Common *cm,
     //                                              int32_t after_cdef);
-
-    static const double TINY_NEAR_ZERO = 1.0E-16;
-
-    // Solves Ax = b, where x and b are column vectors of size nx1 and A is nxn
-    static INLINE int32_t linsolve(int32_t n, double *A, int32_t stride, double *b, double *x) {
-        int32_t i, j, k;
-        double c;
-        // Forward elimination
-        for (k = 0; k < n - 1; k++) {
-            // Bring the largest magitude to the diagonal position
-            for (i = n - 1; i > k; i--) {
-                if (fabs(A[(i - 1) * stride + k]) < fabs(A[i * stride + k])) {
-                    for (j = 0; j < n; j++) {
-                        c = A[i * stride + j];
-                        A[i * stride + j] = A[(i - 1) * stride + j];
-                        A[(i - 1) * stride + j] = c;
-                    }
-                    c = b[i];
-                    b[i] = b[i - 1];
-                    b[i - 1] = c;
-                }
-            }
-            for (i = k; i < n - 1; i++) {
-                if (fabs(A[k * stride + k]) < TINY_NEAR_ZERO) return 0;
-                c = A[(i + 1) * stride + k] / A[k * stride + k];
-                for (j = 0; j < n; j++) A[(i + 1) * stride + j] -= c * A[k * stride + j];
-                b[i + 1] -= c * b[k];
-            }
-        }
-        // Backward substitution
-        for (i = n - 1; i >= 0; i--) {
-            if (fabs(A[i * stride + i]) < TINY_NEAR_ZERO) return 0;
-            c = 0;
-            for (j = i + 1; j <= n - 1; j++) c += A[i * stride + j] * x[j];
-            x[i] = (b[i] - c) / A[i * stride + i];
-        }
-
-        return 1;
-    }
 
 #define RDDIV_BITS 7
 #define RD_EPB_SHIFT 6
