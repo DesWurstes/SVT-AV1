@@ -36,6 +36,8 @@ file(GLOB all_files
     "Codec/*.h"
     "Codec/*.c")
 
+amalgamate_if_include_file_with_file_include_if_amalgamate(all_files)
+
 if(UNIX)
     if(NOT APPLE)
         find_library(M_LIB name m)
