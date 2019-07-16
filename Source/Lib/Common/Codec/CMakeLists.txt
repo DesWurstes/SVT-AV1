@@ -17,4 +17,8 @@ file(GLOB all_files
     "*.h"
     "*.c")
 
+if(AMALGAMATE)
+    include_file_with_file_include(all_files)
+endif()
+
 add_library(COMMON_CODEC OBJECT ${all_files})
