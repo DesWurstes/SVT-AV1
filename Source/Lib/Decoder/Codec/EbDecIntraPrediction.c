@@ -196,7 +196,7 @@ static INLINE cfl_subsample_lbd_fn cfl_subsampling_lbd(TxSize tx_size,
 //######...........Ending for CFL.................#####//
 
 //####...Wrapper funtion calling CFL leaf level functions...####//
-static INLINE CflAllowedType is_cfl_allowed(const PartitionInfo_t *xd,
+static INLINE CflAllowedType is_cfl_allowed_with_frame_header(const PartitionInfo_t *xd,
                                               EbColorConfig *cc,
                                               FrameHeader *fh )
 
@@ -231,7 +231,7 @@ void cfl_predict_block(PartitionInfo_t *xd, CflCtx *cfl_ctx, uint8_t *dst,
                        EbColorConfig *cc, FrameHeader *fh)
 {
     ModeInfo_t *mbmi = xd->mi;
-    CflAllowedType is_cfl_allowed_flag = is_cfl_allowed(xd, cc, fh);
+    CflAllowedType is_cfl_allowed_flag = is_cfl_allowed_with_frame_header(xd, cc, fh);
     assert(is_cfl_allowed_flag == CFL_ALLOWED);
     (void)is_cfl_allowed_flag;
 
