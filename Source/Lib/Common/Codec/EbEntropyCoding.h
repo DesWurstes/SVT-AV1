@@ -278,6 +278,31 @@ extern "C" {
         MvReferenceFrame                rf1,
         PredictionMode                  mode);
 
+    // blockd.h
+
+    static INLINE int32_t get_txb_bwl(TxSize tx_size) {
+        tx_size = av1_get_adjusted_tx_size(tx_size);
+        assert(tx_size < TX_SIZES_ALL);
+        return tx_size_wide_log2[tx_size];
+    }
+    static INLINE int32_t get_txb_wide(TxSize tx_size) {
+        tx_size = av1_get_adjusted_tx_size(tx_size);
+        assert(tx_size < TX_SIZES_ALL);
+        return tx_size_wide[tx_size];
+    }
+    static INLINE int32_t get_txb_high(TxSize tx_size) {
+        tx_size = av1_get_adjusted_tx_size(tx_size);
+        assert(tx_size < TX_SIZES_ALL);
+        return tx_size_high[tx_size];
+    }
+
+    static INLINE void set_dc_sign(int32_t *cul_level, int32_t dc_val) {
+        if (dc_val < 0)
+            *cul_level |= 1 << COEFF_CONTEXT_BITS;
+        else if (dc_val > 0)
+            *cul_level += 2 << COEFF_CONTEXT_BITS;
+    }
+
 #ifdef __cplusplus
 }
 #endif
