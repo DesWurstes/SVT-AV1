@@ -44,6 +44,30 @@ void generate_next_ref_frame_map(EbDecHandle *dec_handle_ptr);
 
 EbDecPicBuf *get_ref_frame_buf(EbDecHandle *dec_handle_ptr, const MvReferenceFrame ref_frame);
 
+static INLINE void integer_mv_precision(MV *mv) {
+    int mod = (mv->row % 8);
+    if (mod != 0) {
+        mv->row -= mod;
+        if (abs(mod) > 4) {
+            if (mod > 0)
+                mv->row += 8;
+            else
+                mv->row -= 8;
+        }
+    }
+
+    mod = (mv->col % 8);
+    if (mod != 0) {
+        mv->col -= mod;
+        if (abs(mod) > 4) {
+            if (mod > 0)
+                mv->col += 8;
+            else
+                mv->col -= 8;
+        }
+    }
+}
+
 #ifdef __cplusplus
 }
 #endif

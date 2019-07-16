@@ -370,30 +370,6 @@ int has_second_ref(const ModeInfo_t *mbmi) {
     return mbmi->ref_frame[1] > INTRA_FRAME;
 }
 
-static INLINE void integer_mv_precision(MV *mv) {
-    int mod = (mv->row % 8);
-    if (mod != 0) {
-        mv->row -= mod;
-        if (abs(mod) > 4) {
-            if (mod > 0)
-                mv->row += 8;
-            else
-                mv->row -= 8;
-        }
-    }
-
-    mod = (mv->col % 8);
-    if (mod != 0) {
-        mv->col -= mod;
-        if (abs(mod) > 4) {
-            if (mod > 0)
-                mv->col += 8;
-            else
-                mv->col -= 8;
-        }
-    }
-}
-
 static INLINE int block_center_x(int mi_col, BlockSize bs) {
     const int bw = block_size_wide[bs];
     return mi_col * MI_SIZE + bw / 2 - 1;
