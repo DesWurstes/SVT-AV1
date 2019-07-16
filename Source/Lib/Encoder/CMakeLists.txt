@@ -34,6 +34,10 @@ file(GLOB all_files
     "Codec/*.h"
     "Codec/*.c")
 
+if(AMALGAMATE)
+    include_file_with_file_include(all_files)
+endif()
+
 if(UNIX)
     if(NOT APPLE)
         find_library(M_LIB name m)
