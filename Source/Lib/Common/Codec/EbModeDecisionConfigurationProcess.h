@@ -93,6 +93,19 @@ extern "C" {
         uint16_t                           sb_total_count);
 
     extern void* mode_decision_configuration_kernel(void *input_ptr);
+
+    static PartitionType from_shape_to_part[] = {
+        PARTITION_NONE,
+        PARTITION_HORZ,
+        PARTITION_VERT,
+        PARTITION_HORZ_A,
+        PARTITION_HORZ_B,
+        PARTITION_VERT_A,
+        PARTITION_VERT_B,
+        PARTITION_HORZ_4,
+        PARTITION_VERT_4,
+        PARTITION_SPLIT
+    };
 #ifdef __cplusplus
 }
 #endif
