@@ -21,6 +21,8 @@
 #include "EbAdaptiveMotionVectorPrediction.h"
 #include "EbSvtAv1.h"
 #include "EbModeDecisionProcess.h"
+#include "EbInterPrediction.h"
+#include "EbModeDecisionConfigurationProcess.h"
 
 #define UNUSED_FUNC
 
@@ -210,16 +212,6 @@ static MvReferenceFrame ref_frame_map[TOTAL_COMP_REFS][2] = {
     { LAST3_FRAME, GOLDEN_FRAME },{ BWDREF_FRAME, ALTREF2_FRAME },
     { ALTREF2_FRAME, ALTREF_FRAME }
 };
-
-void clamp_mv(
-    MV *mv,
-    int32_t min_col,
-    int32_t max_col,
-    int32_t min_row,
-    int32_t max_row) {
-    mv->col = (int16_t)clamp(mv->col, min_col, max_col);
-    mv->row = (int16_t)clamp(mv->row, min_row, max_row);
-}
 
 // clang-format on
 

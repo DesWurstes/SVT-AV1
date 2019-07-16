@@ -152,12 +152,6 @@ static INLINE void revert_scale_extra_bits(SubpelParams *sp) {
 
 //extern INLINE void clamp_mv(MV *mv, int32_t min_col, int32_t max_col, int32_t min_row,int32_t max_row);
 
-static INLINE void clamp_mv(MV *mv, int32_t min_col, int32_t max_col, int32_t min_row,
-    int32_t max_row) {
-    mv->col = (int16_t)clamp(mv->col, min_col, max_col);
-    mv->row = (int16_t)clamp(mv->row, min_row, max_row);
-}
-
 extern void av1_set_ref_frame(MvReferenceFrame *rf,
     int8_t ref_frame_type);
 
@@ -2875,7 +2869,7 @@ extern /*static*/ void model_rd_for_sb(
     }
     return 1;
 }
-static INLINE int32_t av1_is_interp_needed(
+static INLINE int32_t av1_is_interp_needed_with_buffer(
     ModeDecisionCandidateBuffer *candidate_buffer_ptr,
     PictureControlSet *picture_control_set_ptr,
     BlockSize bsize)
@@ -2886,7 +2880,7 @@ static INLINE int32_t av1_is_interp_needed(
     if (candidate_buffer_ptr->candidate_ptr->motion_mode == WARPED_CAUSAL)
         return 0;
 
-    if (is_nontrans_global_motion( bsize,
+    if (is_nontrans_global_motion(bsize,
         candidate_buffer_ptr, picture_control_set_ptr))
         return 0;
 
@@ -2984,7 +2978,7 @@ static const int32_t filter_sets[DUAL_FILTER_SET_SIZE][2] = {
     if (assign_filter == SWITCHABLE) {
         // do interp_filter search
 
-        if (av1_is_interp_needed(candidate_buffer_ptr, picture_control_set_ptr, md_context_ptr->blk_geom->bsize) /*&& av1_is_interp_search_needed(xd)*/) {
+        if (av1_is_interp_needed_with_buffer(candidate_buffer_ptr, picture_control_set_ptr, md_context_ptr->blk_geom->bsize) /*&& av1_is_interp_search_needed(xd)*/) {
             const int32_t filter_set_size = DUAL_FILTER_SET_SIZE;
             int32_t best_in_temp = 0;
             uint32_t best_filters = 0;// mbmi->interp_filters;

@@ -21,6 +21,7 @@
 #include "EbUtility.h"
 #include "EbModeDecision.h"
 #include "EbCodingUnit.h"
+#include "EbModeDecisionConfigurationProcess.h"
 #include "EbModeDecisionProcess.h"
 #include "EbDefinitions.h"
 #include "EbPictureControlSet.h"
@@ -39,20 +40,6 @@ int32_t is_inter_block(const MbModeInfo *mbmi);
   assert(weights_scale - weights_w[bw - 1] < weights_scale);          \
   assert(weights_scale - weights_h[bh - 1] < weights_scale);          \
   assert(pred_scale < 31)  // ensures no overflow when calculating predictor.
-
-static PartitionType from_shape_to_part[] =
-{
-PARTITION_NONE,
-PARTITION_HORZ,
-PARTITION_VERT,
-PARTITION_HORZ_A,
-PARTITION_HORZ_B,
-PARTITION_VERT_A,
-PARTITION_VERT_B,
-PARTITION_HORZ_4,
-PARTITION_VERT_4,
-PARTITION_SPLIT
-};
 
 #define MIDRANGE_VALUE_8BIT    128
 #define MIDRANGE_VALUE_10BIT   512
