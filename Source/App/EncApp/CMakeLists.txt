@@ -16,6 +16,10 @@ file(GLOB all_files
     "../API/*.h"
     "*.c")
 
+if(AMALGAMATE)
+    include_file_with_file_include(all_files)
+endif()
+
 # App Source Files
 add_executable(SvtAv1EncApp
     ${all_files})
