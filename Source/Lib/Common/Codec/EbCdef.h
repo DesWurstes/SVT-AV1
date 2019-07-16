@@ -48,6 +48,8 @@ extern "C" {
 #define REDUCED_TOTAL_STRENGTHS (REDUCED_PRI_STRENGTHS * CDEF_SEC_STRENGTHS)
 #define TOTAL_STRENGTHS (CDEF_PRI_STRENGTHS * CDEF_SEC_STRENGTHS)
 
+static int32_t priconv[REDUCED_PRI_STRENGTHS] = { 0, 1, 2, 3, 5, 7, 10, 13 };
+
     typedef void(*cdef_filter_block_func)(uint8_t *dst8, uint16_t *dst16,
         int32_t dstride, const uint16_t *in,
         int32_t pri_strength, int32_t sec_strength,

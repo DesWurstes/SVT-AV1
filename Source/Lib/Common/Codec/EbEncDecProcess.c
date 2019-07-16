@@ -41,11 +41,6 @@ void av1_cdef_search16bit(
     SequenceControlSet           *sequence_control_set_ptr,
     PictureControlSet            *picture_control_set_ptr
 );
-void av1_cdef_frame16bit(
-    uint8_t is16bit,
-    SequenceControlSet           *sequence_control_set_ptr,
-    PictureControlSet            *pCs
-);
 
 void av1_add_film_grain(EbPictureBufferDesc *src,
     EbPictureBufferDesc *dst,

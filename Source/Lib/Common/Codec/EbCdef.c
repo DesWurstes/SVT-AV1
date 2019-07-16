@@ -1087,8 +1087,6 @@ void av1_cdef_frame16bit(
 
 ///-------search
 
-static int32_t priconv[REDUCED_PRI_STRENGTHS] = { 0, 1, 2, 3, 5, 7, 10, 13 };
-
 /* Search for the best strength to add as an option, knowing we
 already selected nb_strengths options. */
 static uint64_t search_one(int32_t *lev, int32_t nb_strengths,
