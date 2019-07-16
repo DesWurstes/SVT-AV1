@@ -11,6 +11,7 @@
 #include <assert.h>
 #include <inttypes.h>
 
+#include "EbFileUtils.h"
 #include "EbSvtAv1Dec.h"
 #include "EbDecParamParser.h"
 #include "EbMD5Utility.h"
