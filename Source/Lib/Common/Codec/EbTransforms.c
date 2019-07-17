@@ -7556,26 +7556,7 @@ static INLINE TxfmFunc inv_txfm_type_to_func(TxfmType TxfmType) {
 //        }
 //    }
 //}
-static INLINE TranHigh check_range(TranHigh input, int32_t bd) {
-    // AV1 TX case
-    // - 8 bit: signed 16 bit integer
-    // - 10 bit: signed 18 bit integer
-    // - 12 bit: signed 20 bit integer
-    // - max quantization error = 1828 << (bd - 8)
-    const int32_t int_max = (1 << (7 + bd)) - 1 + (914 << (bd - 7));
-    const int32_t int_min = -int_max - 1;
-#if CONFIG_COEFFICIENT_RANGE_CHECKING
-    assert(int_min <= input);
-    assert(input <= int_max);
-#endif  // CONFIG_COEFFICIENT_RANGE_CHECKING
-    return (TranHigh)clamp64(input, int_min, int_max);
-}
-#define HIGHBD_WRAPLOW(x, bd) ((int32_t)check_range((x), bd))
-static INLINE uint16_t highbd_clip_pixel_add(uint16_t dest, TranHigh trans,
-    int32_t bd) {
-    trans = HIGHBD_WRAPLOW(trans, bd);
-    return clip_pixel_highbd(dest + (int32_t)trans, bd);
-}
+
 static INLINE void Av1InverseTransformTwoDCore_c(
     const int32_t *input,
     int32_t inpuStride,

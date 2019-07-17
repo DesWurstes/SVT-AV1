@@ -14,6 +14,7 @@
 #include "EbPictureBufferDesc.h"
 #include "EbPictureControlSet.h"
 #include "aom_dsp_rtcd.h"
+#include "convolve.h"
 #include "EbRestoration.h"
 
 void av1_foreach_rest_unit_in_frame(Av1Common *cm, int32_t plane,
@@ -93,16 +94,10 @@ typedef void(*aom_convolve_fn_t)(const uint8_t *src, int32_t src_stride,
     const int32_t subpel_x_q4, const int32_t subpel_y_q4,
     ConvolveParams *conv_params);
 
-typedef void(*aom_highbd_convolve_fn_t)(
-    const uint16_t *src, int32_t src_stride, uint16_t *dst, int32_t dst_stride, int32_t w,
-    int32_t h, InterpFilterParams *filter_params_x,
-    InterpFilterParams *filter_params_y, const int32_t subpel_x_q4,
-    const int32_t subpel_y_q4, ConvolveParams *conv_params, int32_t bd);
-
 struct AV1Common;
 struct scale_factors;
 
-static INLINE ConvolveParams get_conv_params_wiener(int32_t bd) {
+static INLINE ConvolveParams get_conv_params_wiener_with_offset(int32_t bd) {
     ConvolveParams conv_params;
     (void)bd;
     conv_params.ref = 0;
@@ -526,7 +521,7 @@ static void wiener_filter_stripe(const RestorationUnitInfo *rui,
     (void)tmpbuf;
     (void)bit_depth;
     assert(bit_depth == 8);
-    const ConvolveParams conv_params = get_conv_params_wiener(8);
+    const ConvolveParams conv_params = get_conv_params_wiener_with_offset(8);
 
     for (int32_t j = 0; j < stripe_width; j += procunit_width) {
         int32_t w = AOMMIN(procunit_width, (stripe_width - j + 15) & ~15);
@@ -1109,7 +1104,7 @@ static void wiener_filter_stripe_highbd(const RestorationUnitInfo *rui,
     int32_t dst_stride, int32_t *tmpbuf,
     int32_t bit_depth) {
     (void)tmpbuf;
-    const ConvolveParams conv_params = get_conv_params_wiener(bit_depth);
+    const ConvolveParams conv_params = get_conv_params_wiener_with_offset(bit_depth);
 
     for (int32_t j = 0; j < stripe_width; j += procunit_width) {
         int32_t w = AOMMIN(procunit_width, (stripe_width - j + 15) & ~15);
