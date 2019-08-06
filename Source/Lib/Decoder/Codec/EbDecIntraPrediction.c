@@ -320,7 +320,7 @@ static INLINE void sub8x8_adjust_offset(PartitionInfo_t *xd, const CflCtx *cfl_c
 }
 
 void cfl_store_tx(PartitionInfo_t *xd, CflCtx *cfl_ctx, int row, int col, TxSize tx_size,
-                  BlockSize  bsize, EbColorConfig *cc, uint8_t *dst_buff,
+                  BlockSize  bsize, EbColorConfig *cc, void *dst_buff,
                   uint32_t dst_stride)
 {
     if (block_size_high[bsize] == 4 || block_size_wide[bsize] == 4) {
@@ -330,7 +330,7 @@ void cfl_store_tx(PartitionInfo_t *xd, CflCtx *cfl_ctx, int row, int col, TxSize
         sub8x8_adjust_offset(xd,cfl_ctx, &row, &col);
     }
 
-     cfl_store(cfl_ctx, dst_buff, dst_stride, row, col, tx_size,
+     cfl_store(cfl_ctx, (uint8_t *)dst_buff, dst_stride, row, col, tx_size,
          cc->bit_depth != AOM_BITS_8);
 }
 //#####.....................Ending for wrapper of CFL...............................####//
